@@ -14,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SignInPage extends StatelessWidget {
   TextEditingController _numberController = TextEditingController();
   TextEditingController _codeController = TextEditingController();
@@ -90,6 +89,8 @@ class SignInPage extends StatelessWidget {
   void signIn(BuildContext context) async {
     var number = _numberController.text;
     var code = _codeController.text;
+    //number = "18800001111";
+    //
     if (number.length != 11) {
       Fluttertoast.showToast(
           msg: "请输入11位的手机号",
@@ -101,40 +102,51 @@ class SignInPage extends StatelessWidget {
           fontSize: 16.0);
       return;
     }
-    if (code.length != 6) {
-      Fluttertoast.showToast(
-          msg: "请输入6位的验证码",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.black45,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      return;
-    }
+    code = "123456";
+    // if (code.length != 6) {
+    //   Fluttertoast.showToast(
+    //       msg: "请输入6位的验证码",
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       gravity: ToastGravity.CENTER,
+    //       timeInSecForIos: 1,
+    //       backgroundColor: Colors.black45,
+    //       textColor: Colors.white,
+    //       fontSize: 16.0);
+    //   return;
+    // }
 
+    // 创建登录请求
     var request = SignInReq();
     request.phoneNumber = number;
     request.code = code;
+
+    // 从存储获取设备id
     var prefs = await SharedPreferences.getInstance();
     var deviceId = prefs.getInt(deviceIdKey);
+
+    deviceId = 1;
     print("sign_in_page device_id:$deviceId");
+
     request.deviceId = Int64(deviceId);
 
     SignInResp signInResp;
+    // 执行登录请求
     try {
       signInResp = await businessClient.signIn(request);
-      print(signInResp.toString());
+      print("登录结果:" + signInResp.toString());
     } catch (e) {
       print(e);
       toast("登录失败");
       return;
     }
 
+    // 将数据保存到数据库
+    // 主要是：userId 和 token
     await prefs.setInt(userIdKey, signInResp.userId.toInt());
     await prefs.setString(tokenKey, signInResp.token);
     await sharedPreferences.setString(phoneNumberKey, number);
 
+    // 请求获取用户的profile信息
     var getUserResp =
         await businessClient.getUser(GetUserReq(), options: getOptions());
     await sharedPreferences.setString(nicknameKey, getUserResp.user.nickname);

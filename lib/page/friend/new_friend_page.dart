@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'add_friend_page.dart';
 import 'package:provider/provider.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class NewFriendPage extends StatefulWidget {
   @override
@@ -118,7 +119,7 @@ class _NewFriendPageState extends State<NewFriendPage> {
                           EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(imageUrl:friend.avatarUrl),
+                        child: CachedImage(imageUrl: friend.avatarUrl),
                       ),
                     ),
                     title: Text("${friend.nickname}"),
@@ -146,7 +147,12 @@ class _NewFriendPageState extends State<NewFriendPage> {
     if (status == NewFriend.agree) {
       var request = AgreeAddFriendReq();
       request.userId = Int64(friend.userId);
-      await logicClient.agreeAddFriend(request, options: getOptions());
+      try {
+        await logicClient.agreeAddFriend(request, options: getOptions());
+      } catch (e) {
+        print(e);
+        print("同意好友申请失败");
+      }
 
       // 重新加载好友列表
       await friendService.init();

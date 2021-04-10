@@ -18,15 +18,16 @@ import 'package:fim/pb/push.ext.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart';
 
+// 长连接
 class SocketManager {
   static const headerLen = 2;
   static Socket socket;
   static List<int> readBuffer = List<int>();
 
   void connect(String host, int port) async {
+    // tcp长连接
     await Socket.connect(host, port, timeout: Duration(seconds: 2)).then((s) {
-      print("连接成功");
-
+      print("长连接成功");
       socket = s;
       socket.listen(onData,
           onError: onError, onDone: doneHandler, cancelOnError: true);
@@ -43,6 +44,7 @@ class SocketManager {
     await socket.flush();
     print("长连接登录");
 
+    // 长连接心跳
     Future.delayed(Duration(seconds: 5), () {
       socket.add(encode(pb.PackageType.PT_HEARTBEAT, null));
       socket.flush();
@@ -50,7 +52,8 @@ class SocketManager {
   }
 
   void onData(Uint8List list) {
-    print("onData");
+    print("长连接收到数据");
+
     readBuffer.addAll(list);
 
     if (readBuffer.length < headerLen) {
@@ -68,12 +71,14 @@ class SocketManager {
     print(output);
 
     switch (output.type) {
+      // 登录成功时
       case pb.PackageType.PT_SIGN_IN:
         if (output.code != 0) {
           print("signIn error code:${output.code};message:${output.message}");
           return;
         }
-        print("登录成功");
+        print("长连接登录成功");
+
         // 触发消息同步
         var input = pb.SyncInput();
         input.seq = getMaxSYN();
@@ -88,19 +93,30 @@ class SocketManager {
           socket.flush();
         });
         break;
+
+      // 收到同步消息
       case pb.PackageType.PT_SYNC:
-        print("sync");
+        print("长连接收到同步消息sync1");
         var syncOutput = pb.SyncOutput.fromBuffer(output.data);
         if (syncOutput.messages.length <= 0) {
           return;
         }
+        print("长连接收到同步消息sync2");
         var maxSYN = syncOutput.messages.last.seq;
         messageACK(output.requestId, maxSYN);
 
         for (var message in syncOutput.messages) {
-          handleMessage(message);
+          print("长连接收到同步消息sync3");
+
+          try {
+            handleMessage(message);
+          } catch (e) {
+            print(e);
+            print("处理消息失败" + message.toString());
+          }
         }
         if (syncOutput.hasMore == true) {
+          print("长连接收到同步消息sync4");
           var input = pb.SyncInput();
           input.seq = syncOutput.messages.last.seq;
           socket.add(encode(pb.PackageType.PT_SYNC, input));
@@ -168,27 +184,43 @@ class SocketManager {
 
     // 好友消息
     if (message.objectType == model.Message.objectTypeUser) {
+      print("====>处理好友消息");
       // 处理消息逻辑
       chatService.onMessage(message);
+
       // 保存到最近联系人
-      var contact = await RecentContact.build(message);
-      recentContactService.onMessage(contact);
-      if (!chatService.isOpen(contact.objectType, contact.objectId)) {
-        showNotifications(contact.name, contact.lastMessage);
+      try {
+        var contact = await RecentContact.build(message);
+        recentContactService.onMessage(contact);
+        if (!chatService.isOpen(contact.objectType, contact.objectId)) {
+          showNotifications(contact.name, contact.lastMessage);
+        }
+      } catch (e) {
+        print(e);
+        print("保存消息到最近联系人失败");
       }
+
       return;
     }
 
     // 群组消息
     if (message.objectType == model.Message.objectTypeGroup) {
+      print("====>处理群组消息");
+
       // 处理消息逻辑
       chatService.onMessage(message);
-      // 保存到最近联系人
-      var contact = await RecentContact.build(message);
-      recentContactService.onMessage(contact);
 
-      if (!chatService.isOpen(contact.objectType, contact.objectId)) {
-        showNotifications(contact.name, contact.lastMessage);
+      try {
+        // 保存到最近联系人
+        var contact = await RecentContact.build(message);
+        recentContactService.onMessage(contact);
+
+        if (!chatService.isOpen(contact.objectType, contact.objectId)) {
+          showNotifications(contact.name, contact.lastMessage);
+        }
+      } catch (e) {
+        print(e);
+        print("保存到最近联系人失败");
       }
 
       // 处理群组系统消息
@@ -219,7 +251,10 @@ class SocketManager {
 
     // 系统消息
     if (message.objectType == model.Message.objectTypeSystem) {
+      print("=====>处理系统消息");
+
       var command = pb.Command.fromBuffer(message.messageContent);
+
       // 添加好友
       if (message.objectId == PushCode.PC_ADD_FRIEND.value) {
         var addFriendPush = AddFriendPush.fromBuffer(command.data);

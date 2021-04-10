@@ -7,7 +7,9 @@ import 'package:fim/theme/color.dart';
 import 'package:fim/theme/size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fim/widget/cached_image.dart';
 
+// 搜索用户页面
 class SearchUserPage extends StatefulWidget {
   @override
   _SearchUserPageState createState() => _SearchUserPageState();
@@ -41,13 +43,15 @@ class _SearchUserPageState extends State<SearchUserPage> {
                 fillColor: Colors.white,
                 border: InputBorder.none,
               ),
-              //内容提交(按回车)的回调
+              // 搜索好友，内容提交(按回车)的回调
               onSubmitted: (text) async {
                 var request = SearchUserReq();
                 request.key = text;
-                var response =
-                    await businessClient.searchUser(request, options: getOptions());
+
+                var response = await businessClient.searchUser(request,
+                    options: getOptions());
                 setState(() {
+                  print("搜索结果" + response.users.toString());
                   users = response.users;
                 });
               },
@@ -65,10 +69,12 @@ class _SearchUserPageState extends State<SearchUserPage> {
                         EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(imageUrl:users[index].avatarUrl),
+                      child: CachedImage(imageUrl: users[index].avatarUrl),
                     ),
                   ),
-                  title: Text("${users[index].nickname}"),
+
+                  title: Text("${users[index].userId}"), //nickname
+
                   onTap: () {
                     Navigator.pushReplacement(
                         context,

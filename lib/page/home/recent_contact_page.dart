@@ -9,6 +9,7 @@ import 'package:fim/widget/red_dot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class RecentContactPage extends StatefulWidget {
   @override
@@ -19,6 +20,13 @@ class _RecentContactPageState extends State<RecentContactPage> {
   @override
   Widget build(BuildContext context) {
     print("RecentContactPage build");
+
+    var contacts = context.watch<RecentContactService>().contacts;
+    var itemCount = 0;
+    if (contacts != null) {
+      itemCount = contacts.length;
+    }
+
     return Container(
       child: ListView.separated(
         separatorBuilder: (BuildContext context, int index) {
@@ -29,9 +37,16 @@ class _RecentContactPageState extends State<RecentContactPage> {
             thickness: 2,
           );
         },
-        itemCount: context.watch<RecentContactService>().contacts.length,
+        itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) {
           var contact = context.watch<RecentContactService>().contacts[index];
+          if (contact.avatarUrl == null) {
+            contact.avatarUrl = "avatar.jpeg";
+          }
+          if (contact.name == null) {
+            contact.name = "未知联系人";
+          }
+          print("====>联系人" + contact.toMap().toString());
           return _ListItem(
             icon: contact.avatarUrl,
             name: contact.name,
@@ -100,7 +115,7 @@ class _ListItemState extends State<_ListItem> {
                   padding: EdgeInsets.all(5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(7),
-                    child: CachedNetworkImage(imageUrl: widget.icon),
+                    child: CachedImage(imageUrl: widget.icon),
                   ),
                 ),
               ),

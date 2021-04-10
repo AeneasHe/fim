@@ -2,13 +2,16 @@ import 'package:fim/service/preferences.dart';
 import 'package:fim/model/message.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:fim/dao/database_path.dart';
 
+// 操作Message数据库: 连接 model 和 db
 class MessageDao {
   static Database database;
 
   static init() async {
+    // 数据库初始化
     database = await openDatabase(
-      join(await getDatabasesPath(),getUserId().toString()+ '/message.db'),
+      await databasePath('/message.db'),
       onCreate: (db, version) {
         print("创建数据库 message");
         return _onCreate(db, version);
@@ -42,11 +45,18 @@ class MessageDao {
     );
   }
 
+  // 数据库添加消息
   static void add(Message message) async {
-    await database.insert("message", message.toMap());
-    setMaxSYN(message.seq);
+    try {
+      await database.insert("message", message.toMap());
+      setMaxSYN(message.seq);
+    } catch (e) {
+      print("保存新消息失败");
+      print(e);
+    }
   }
 
+  // 更新消息的状态
   static void updateStatus(int objectType, int objectId, int status) async {
     await database.update(
       "message",
@@ -56,6 +66,7 @@ class MessageDao {
     );
   }
 
+  // 列出消息
   static Future<List<Message>> list(
       int objectType, int objectId, int seq, int limit) async {
     List<Map> maps = await database.query(

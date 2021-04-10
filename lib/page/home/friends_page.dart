@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
 import '../friend/new_friend_page.dart';
 import 'package:provider/provider.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -30,6 +31,12 @@ class _FriendsPageState extends State<FriendsPage> {
   @override
   Widget build(BuildContext context) {
     print("friend_page build");
+    var contacts = context.watch<FriendService>().friendList;
+    var itemCount = 0;
+    if (contacts != null) {
+      itemCount = contacts.length;
+    }
+
     return Container(
       child: Column(
         children: [
@@ -77,11 +84,11 @@ class _FriendsPageState extends State<FriendsPage> {
                 );
               },
               addAutomaticKeepAlives: true,
-              itemCount: context.watch<FriendService>().friendList.length,
+              itemCount: itemCount,
               itemBuilder: (BuildContext context, int index) {
                 var friend = context.watch<FriendService>().friendList[index];
                 return ListItem(
-                  icon: CachedNetworkImage(imageUrl:friend.avatarUrl),
+                  icon: CachedImage(imageUrl: friend.avatarUrl),
                   name: friend.remarks != "" ? friend.remarks : friend.nickname,
                   onTab: () {
                     Navigator.push(

@@ -11,6 +11,7 @@ import 'package:fim/widget/my_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// 登录后进入的首页
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 

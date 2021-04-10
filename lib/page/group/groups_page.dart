@@ -11,6 +11,7 @@ import 'package:fim/widget/list_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class GroupsPage extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _GroupsPageState extends State<GroupsPage> {
             : ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return ListItem(
-                    icon: CachedNetworkImage(imageUrl:groups[index].avatarUrl),
+                    icon: CachedImage(imageUrl: groups[index].avatarUrl),
                     name: groups[index].name,
                     onTab: () {
                       Navigator.pushReplacement(

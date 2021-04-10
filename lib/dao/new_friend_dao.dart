@@ -1,14 +1,13 @@
-import 'package:fim/service/preferences.dart';
 import 'package:fim/model/new_friend.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:fim/dao/database_path.dart';
 
 class NewFriendDao {
   static Database database;
 
   static void init() async {
     database = await openDatabase(
-      join(await getDatabasesPath(), getUserId().toString() + '/new_friend.db'),
+      await databasePath('/new_friend.db'),
       onCreate: (db, version) {
         print("创建数据库 new_friend");
         return _onCreate(db, version);

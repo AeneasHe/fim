@@ -5,12 +5,15 @@ import 'package:flutter/cupertino.dart';
 var recentContactService = RecentContactService();
 
 class RecentContactService with ChangeNotifier {
-  List<RecentContact> contacts;
+  List<RecentContact> contacts = <RecentContact>[];
   int unReadNum;
 
   init() async {
     print("recentContactService init");
     contacts = await RecentContactDao.list();
+    if (contacts == null) {
+      contacts = <RecentContact>[];
+    }
     unReadNum = getUnreadNum();
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class EditImage extends StatefulWidget {
   String title;
@@ -15,7 +16,7 @@ class EditImage extends StatefulWidget {
   EditImage({Key key, this.title, String url, this.onPicked})
       : super(key: key) {
     if (url != null && url != "") {
-      image = CachedNetworkImage(imageUrl: url);
+      image = CachedImage(imageUrl: url);
     }
   }
 

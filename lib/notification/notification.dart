@@ -1,6 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'dart:typed_data';
+// import 'package:device_info/device_info.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:path_provider/path_provider.dart';
+// import 'package:rxdart/subjects.dart';
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -10,9 +21,10 @@ void initNotification() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('ic_launcher');
 
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
+  var iOS = new IOSInitializationSettings();
+
+  final InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid, iOS: iOS);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: selectNotification);

@@ -15,11 +15,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/services.dart';
+import 'package:fim/widget/cached_image.dart';
 
+// 好友页面
 class FriendPage extends StatefulWidget {
   Friend friend;
 
   FriendPage({Key key, Int64 friendId}) : super(key: key) {
+    // 初始化时，根据id查询好友信息
     friend = friendService.get(friendId);
   }
 
@@ -51,7 +54,7 @@ class _FriendPageState extends State<FriendPage> {
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
+                    child: CachedImage(
                       imageUrl: widget.friend.avatarUrl,
                       width: 50,
                       height: 50,

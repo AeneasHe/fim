@@ -9,6 +9,7 @@ import 'package:fim/util/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class AddMemberPage extends StatefulWidget {
   Int64 groupId;
@@ -56,7 +57,7 @@ class _AddMemberState extends State<AddMemberPage> {
             padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(imageUrl:user.user.avatarUrl),
+              child: CachedImage(imageUrl: user.user.avatarUrl),
             ),
           ),
         );
@@ -102,7 +103,7 @@ class _AddMemberState extends State<AddMemberPage> {
                             left: 5, right: 5, top: 5, bottom: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(imageUrl:user.user.avatarUrl),
+                          child: CachedImage(imageUrl: user.user.avatarUrl),
                         ),
                       ),
                       title: Text(user.user.nickname),

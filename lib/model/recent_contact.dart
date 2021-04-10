@@ -6,6 +6,7 @@ import 'package:fim/pb/conn.ext.pb.dart';
 import 'package:intl/intl.dart';
 import 'package:fixnum/fixnum.dart';
 
+// 通讯录微服务
 class RecentContact {
   int objectType;
   int objectId;
@@ -28,6 +29,7 @@ class RecentContact {
   }
 
   static Future<RecentContact> build(model.Message message) async {
+    // 最近的联系人
     var contact = RecentContact();
 
     contact.objectType = message.objectType;
@@ -42,11 +44,15 @@ class RecentContact {
       contact.unread = 1;
     }
 
-    // 判断是否是用户消息
+    // 判断是否是用户（好友）消息
     if (message.objectType == model.Message.objectTypeUser) {
+      // 从好友微服务根据userid查询好友信息
       var friend = friendService.get(Int64(message.objectId));
-      contact.name = friend.remarks != "" ? friend.remarks : friend.nickname;
-      contact.avatarUrl = friend.avatarUrl;
+      if (friend != null) {
+        // remarks是我备注的好友名，nickname是好友自己设置的名
+        contact.name = friend.remarks != "" ? friend.remarks : friend.nickname;
+        contact.avatarUrl = friend.avatarUrl;
+      }
     }
     // 判断是否是群组消息
     if (message.objectType == model.Message.objectTypeGroup) {

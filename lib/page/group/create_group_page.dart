@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
 import '../chat/chat_page.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class CreateGroupPage extends StatefulWidget {
   @override
@@ -44,7 +45,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
             padding: EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(imageUrl:user.user.avatarUrl),
+              child: CachedImage(imageUrl: user.user.avatarUrl),
             ),
           ),
         );
@@ -90,7 +91,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                             left: 5, right: 5, top: 5, bottom: 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(imageUrl:user.user.avatarUrl),
+                          child: CachedImage(imageUrl: user.user.avatarUrl),
                         ),
                       ),
                       title: Text(user.user.nickname),

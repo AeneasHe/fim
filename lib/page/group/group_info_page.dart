@@ -20,6 +20,7 @@ import 'package:fim/widget/edit_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class GroupInfoPage extends StatefulWidget {
   Int64 groupId;
@@ -126,8 +127,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
           String name;
           if (index != members.length) {
             var member = members[index];
-            image = CachedNetworkImage(
-                imageUrl:member.avatarUrl);
+            image = CachedImage(imageUrl: member.avatarUrl);
             name = member.nickname;
           } else {
             image = Image.asset("assets/add.png");

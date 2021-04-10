@@ -23,6 +23,7 @@ message Message {
     MessageStatus status = 9; // 消息状态
 }
 
+// 发送者
 message Sender{
     SenderType sender_type = 1; // 发送者类型，1:系统,2:用户,3:第三方业务系统
     int64 sender_id = 2; // 发送者id
@@ -146,6 +147,7 @@ message MessageSend {
     Message message = 1; // 消息
 }
 
+// 消息类型
 enum SenderType {
     ST_UNKNOWN = 0; // 未知的
     ST_SYSTEM = 1; // IM系统

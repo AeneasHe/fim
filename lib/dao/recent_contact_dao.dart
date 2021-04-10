@@ -2,14 +2,16 @@ import 'package:fim/service/preferences.dart';
 import 'package:fim/model/recent_contact.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:fim/dao/database_path.dart';
 
 class RecentContactDao {
   static Database database;
 
   static void init() async {
     database = await openDatabase(
-      join(await getDatabasesPath(),
-          getUserId().toString() + '/recent_contact.db'),
+      await databasePath('/recent_contact.db'),
+      // join(await getDatabasesPath(),
+      //     getUserId().toString() + '/recent_contact.db'),
       onCreate: (db, version) {
         print("创建数据库 recent_contact");
         return _onCreate(db, version);

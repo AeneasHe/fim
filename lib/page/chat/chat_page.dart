@@ -23,6 +23,7 @@ import 'package:protobuf/protobuf.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class ChatPage extends StatefulWidget {
   Int64 objectType;
@@ -204,7 +205,12 @@ class _ChatPageState extends State<ChatPage> {
     var messageType = pb.MessageType.valueOf(message.messageType);
     switch (messageType) {
       case pb.MessageType.MT_TEXT:
-        var text = pb.Text.fromBuffer(message.messageContent);
+        var text = pb.Text();
+        try {
+          text = pb.Text.fromBuffer(message.messageContent);
+        } catch (e) {
+          text.text = "解析文本消息失败";
+        }
 
         contentWidget = Container(
           padding: EdgeInsets.all(8),
@@ -295,9 +301,10 @@ class _ChatPageState extends State<ChatPage> {
                       margin: EdgeInsets.only(right: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
-                        child: CachedNetworkImage(
-                            imageUrl: message.senderAvatarUrl,
-                            fit: BoxFit.cover),
+                        child: CachedImage(
+                          imageUrl: message.senderAvatarUrl,
+                          //fit: BoxFit.cover
+                        ),
                       ),
                     ),
 
@@ -339,7 +346,7 @@ class _ChatPageState extends State<ChatPage> {
                       margin: EdgeInsets.only(left: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
-                        child: CachedNetworkImage(
+                        child: CachedImage(
                             imageUrl: getAvatarUrl(), fit: BoxFit.fill),
                       ),
                     )

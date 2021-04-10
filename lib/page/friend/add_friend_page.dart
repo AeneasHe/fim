@@ -8,7 +8,9 @@ import 'package:fim/theme/size.dart';
 import 'package:fim/util/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fim/widget/cached_image.dart';
 
+// 添加好友页面
 class AddFriendPage extends StatefulWidget {
   User user;
 
@@ -43,7 +45,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(imageUrl:this.widget.user.avatarUrl),
+                      child: CachedImage(imageUrl: this.widget.user.avatarUrl),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 20.0),
@@ -135,6 +137,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
   }
 
   void onPressed() async {
+    // 发送添加好友请求
     var request = AddFriendReq();
     request.friendId = this.widget.user.userId;
     request.remarks = remarksController.text;

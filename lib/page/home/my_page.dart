@@ -5,6 +5,7 @@ import 'package:fim/theme/color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fim/service/preferences.dart';
+import 'package:fim/widget/cached_image.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -24,6 +25,22 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     print("my_page build");
+
+    var avatarImage;
+    try {
+      avatarImage = CachedImage(
+        imageUrl: getAvatarUrl(),
+        width: 50,
+        height: 50,
+      );
+    } catch (e) {
+      avatarImage = Text("Avatar");
+    }
+    var nickName = getNickname();
+    if (nickName == null) {
+      nickName = "user";
+    }
+
     return Container(
       color: backgroundColor,
       child: Column(
@@ -36,11 +53,7 @@ class _MyPageState extends State<MyPage> {
               children: <Widget>[
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: getAvatarUrl(),
-                    width: 50,
-                    height: 50,
-                  ),
+                  child: avatarImage,
                 ),
                 Container(
                   alignment: Alignment.centerRight,
@@ -51,7 +64,7 @@ class _MyPageState extends State<MyPage> {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          getNickname(),
+                          nickName,
                           style: TextStyle(
                             fontSize: 18.0,
                           ),

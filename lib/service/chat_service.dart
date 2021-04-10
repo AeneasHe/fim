@@ -16,6 +16,7 @@ class ChatData {
 
 var chatService = ChatService();
 
+// 聊天服务
 class ChatService with ChangeNotifier {
   Map<String, ChatData> map = Map();
 
@@ -23,12 +24,15 @@ class ChatService with ChangeNotifier {
     return "$objectType-$objectId";
   }
 
+  // 初始化
   init(int objectType, int objectId, String name) async {
+    // 从数据库取出消息，最多20条
     var messages = await MessageDao.list(
         objectType, objectId, Int64.MAX_VALUE.toInt(), 20);
     map[key(objectType, objectId)] = ChatData(name, messages);
   }
 
+  // 清空消息
   destroy(int objectType, int objectId) {
     map.remove(key(objectType, objectId));
   }
@@ -41,10 +45,12 @@ class ChatService with ChangeNotifier {
     return true;
   }
 
+  // 获取聊天数据
   ChatData getChatData(int objectType, int objectId) {
     return map[key(objectType, objectId)];
   }
 
+  // 发送聊天数据
   void sendMessage(Message event) async {
     var chatData = map[key(event.objectType, event.objectId)];
     if (chatData == null) return;
@@ -56,10 +62,12 @@ class ChatService with ChangeNotifier {
     }
   }
 
+  // 保存聊天记录
   void save(Message event) async {
     await MessageDao.add(event);
   }
 
+  // 新消息
   void onMessage(Message event) async {
     await MessageDao.add(event);
 
@@ -90,6 +98,7 @@ class ChatService with ChangeNotifier {
     }
   }
 
+  // 加载更多消息
   void loadMore(int objectType, int objectId) async {
     var chatData = map[key(objectType, objectId)];
     var messages = chatData.messages;
@@ -99,6 +108,7 @@ class ChatService with ChangeNotifier {
     notifyListeners();
   }
 
+  // 名字发生变化时
   void onChangeName(int objectType, int objectId, String name) {
     var chatData = map[key(objectType, objectId)];
     if (chatData == null) return;
