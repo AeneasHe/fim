@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// 加载中页面
 class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,10 @@ class LoadingPage extends StatelessWidget {
       child: Container(
         width: 200,
         height: 100,
-        child: Text("正在加载...",textAlign: TextAlign.center,),
+        child: Text(
+          "正在加载...",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

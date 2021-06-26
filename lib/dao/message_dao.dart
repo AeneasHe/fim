@@ -1,6 +1,5 @@
 import 'package:fim/service/preferences.dart';
 import 'package:fim/model/message.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:fim/dao/database_path.dart';
 
@@ -20,6 +19,7 @@ class MessageDao {
     );
   }
 
+  // 创建表
   static void _onCreate(Database db, int version) async {
     await db.execute(
       '''CREATE TABLE message (
@@ -45,7 +45,7 @@ class MessageDao {
     );
   }
 
-  // 数据库添加消息
+  // 添加消息
   static void add(Message message) async {
     try {
       await database.insert("message", message.toMap());

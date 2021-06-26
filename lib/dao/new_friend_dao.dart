@@ -5,7 +5,7 @@ import 'package:fim/dao/database_path.dart';
 class NewFriendDao {
   static Database database;
 
-  static void init() async {
+  static Future<void> init() async {
     database = await openDatabase(
       await databasePath('/new_friend.db'),
       onCreate: (db, version) {
@@ -16,6 +16,7 @@ class NewFriendDao {
     );
   }
 
+  // 创建表
   static void _onCreate(Database db, int version) async {
     await db.execute(
       '''CREATE TABLE new_friend (
@@ -36,22 +37,26 @@ class NewFriendDao {
     );
   }
 
+  // 添加好友
   static void add(NewFriend friend) async {
     await database.insert("new_friend", friend.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  // 更新状态
   static void updateStatus(int userId, int status) async {
     await database.rawUpdate(
         "UPDATE new_friend SET status = ? where user_id = ?", [status, userId]);
   }
 
+  // 读取
   static void read() async {
     await database.rawUpdate(
         "UPDATE new_friend SET status = ? where status = ?",
         [NewFriend.read, NewFriend.unread]);
   }
 
+  // 列出好友
   static Future<List<NewFriend>> list() async {
     List<Map> maps = await database.query(
       "new_friend",
@@ -65,6 +70,7 @@ class NewFriendDao {
     return friends;
   }
 
+  // 获取未读好友数量
   static Future<int> getUnreadNum() async {
     return Sqflite.firstIntValue(await database.rawQuery(
         "select count(*) from new_friend where status = ?",

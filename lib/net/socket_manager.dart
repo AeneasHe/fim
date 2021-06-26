@@ -24,7 +24,7 @@ class SocketManager {
   static Socket socket;
   static List<int> readBuffer = List<int>();
 
-  void connect(String host, int port) async {
+  Future<void> connect(String host, int port) async {
     // tcp长连接
     await Socket.connect(host, port, timeout: Duration(seconds: 2)).then((s) {
       print("长连接成功");

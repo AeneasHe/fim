@@ -1,13 +1,15 @@
-import 'package:fim/service/preferences.dart';
+//import 'package:fim/service/preferences.dart';
+//import 'package:path/path.dart';
+
 import 'package:fim/model/recent_contact.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:fim/dao/database_path.dart';
 
+// 最新的联系人
 class RecentContactDao {
   static Database database;
 
-  static void init() async {
+  static Future<void> init() async {
     database = await openDatabase(
       await databasePath('/recent_contact.db'),
       // join(await getDatabasesPath(),
@@ -64,7 +66,7 @@ class RecentContactDao {
     return RecentContact.fromMap(maps[0]);
   }
 
-  static void _update(RecentContact contact) async {
+  static Future<void> _update(RecentContact contact) async {
     await database.insert("recent_contact", contact.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }

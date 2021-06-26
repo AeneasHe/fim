@@ -100,6 +100,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // 弹出菜单
   PopupMenuButton _popMenu() {
     return PopupMenuButton<String>(
       itemBuilder: (context) {
@@ -134,11 +135,14 @@ class _HomePageState extends State<HomePage> {
       color: Colors.black45,
       offset: Offset(0, 100),
       onSelected: (String key) {
+        // 根据用户选择跳到对应页面
         if (key == "addFriend") {
+          // 搜索好友页面
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => SearchUserPage()));
         }
         if (key == "createGroup") {
+          // 创建群组页面
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => CreateGroupPage()));
         }

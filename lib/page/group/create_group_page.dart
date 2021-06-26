@@ -15,6 +15,7 @@ import 'package:fixnum/fixnum.dart';
 import '../chat/chat_page.dart';
 import 'package:fim/widget/cached_image.dart';
 
+// 创建群组页面，在home_page菜单里唤起
 class CreateGroupPage extends StatefulWidget {
   @override
   _CreateGroupPageState createState() => _CreateGroupPageState();

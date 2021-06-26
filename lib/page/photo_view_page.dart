@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+// 查看照片页面
 class PhotoViewPage extends StatelessWidget {
-  String url;
+  final String url;
 
   PhotoViewPage(this.url);
 

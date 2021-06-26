@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'package:fim/theme/color.dart';
+// 服务
 import 'package:fim/service/chat_service.dart';
 import 'package:fim/service/friend_service.dart';
 import 'package:fim/service/new_friend_service.dart';
 import 'package:fim/service/recent_contact_service.dart';
+// 页面
 import 'package:fim/page/chat/chat_page.dart';
 import 'package:fim/page/init_page.dart';
-import 'package:fim/theme/color.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   if (Platform.isAndroid) {
@@ -50,7 +53,7 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      home: (InitPage()),
+      home: (InitPage()), // 初始页面
       routes: {
         '/chatPage': (context) => ChatPage(),
       },
