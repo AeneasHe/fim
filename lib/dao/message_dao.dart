@@ -46,7 +46,7 @@ class MessageDao {
   }
 
   // 添加消息
-  static void add(Message message) async {
+  static Future<void> add(Message message) async {
     try {
       await database.insert("message", message.toMap());
       setMaxSYN(message.seq);

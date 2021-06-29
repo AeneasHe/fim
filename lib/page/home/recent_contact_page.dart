@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fim/service/recent_contact_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';

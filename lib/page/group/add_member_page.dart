@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fim/service/friend_service.dart';
 import 'package:fim/service/preferences.dart';
 import 'package:fim/net/api.dart';

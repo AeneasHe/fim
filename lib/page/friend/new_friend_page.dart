@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fim/page/loading_page.dart';
 import 'package:fim/service/friend_service.dart';
 import 'package:fim/service/new_friend_service.dart';
@@ -15,7 +15,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:fim/model/message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'add_friend_page.dart';
+//import 'add_friend_page.dart';
 import 'package:provider/provider.dart';
 import 'package:fim/widget/cached_image.dart';
 

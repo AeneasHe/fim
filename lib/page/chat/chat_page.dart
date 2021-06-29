@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fim/page/photo_view_page.dart';
+//import 'package:fim/page/photo_view_page.dart';
 import 'package:fim/service/chat_service.dart';
 import 'package:fim/service/preferences.dart';
 import 'package:fim/service/recent_contact_service.dart';
@@ -541,7 +541,7 @@ class _ChatPageState extends State<ChatPage> {
     request.sendTime = now;
     request.isPersist = true;
     var response =
-        await logicClient.sendMessage(request, options: await getOptions());
+        await logicClient.sendMessage(request, options: getOptions());
 
     message.seq = response.seq.toInt();
     message.status = 0;
