@@ -3,6 +3,7 @@ import 'package:fim/pb/conn.ext.pb.dart' as pb;
 import 'package:fim/pb/push.ext.pb.dart';
 import 'package:fixnum/fixnum.dart';
 
+// 消息数据结构
 class Message {
   static const int objectTypeUser = 1; // 用户
   static const int objectTypeGroup = 2; // 群组
@@ -26,7 +27,7 @@ class Message {
   Message.fromPB(pb.Message message, Int64 userId) {
     var sender = message.sender; // 消息的发送者
 
-    // 表示是普通用户（好友）发送给自己的消息
+    // 1.普通用户（好友）发送给自己的消息
     if (sender.senderType == pb.SenderType.ST_USER && // 如果发送者身份是普通用户
             sender.senderId != userId && // 如果不是自己发出来的消息
             message.receiverType == pb.ReceiverType.RT_USER // 如果消息是发给用户的
@@ -46,7 +47,7 @@ class Message {
       return;
     }
 
-    // 表示是自己发送给普通用户（好友）的消息
+    // 2.自己发送给普通用户（好友）的消息
     if (sender.senderType == pb.SenderType.ST_USER && //发送者是普通用户
             sender.senderId == userId && // 发送者的id是自己
             message.receiverType == pb.ReceiverType.RT_USER // 消息的接收者是普通用户
@@ -66,7 +67,7 @@ class Message {
       return;
     }
 
-    // 表示是群组发送过来的消息
+    // 3.群组发送过来的消息
     if (message.receiverType == pb.ReceiverType.RT_SMALL_GROUP // 消息的接收者是群组
         ) {
       objectType = Message.objectTypeGroup;
@@ -84,7 +85,7 @@ class Message {
       return;
     }
 
-    // 处理系统消息
+    // 4.系统消息
     if (sender.senderType == pb.SenderType.ST_SYSTEM // 消息的发送者是平台系统
         ) {
       var command = pb.Command.fromBuffer(message.messageContent);

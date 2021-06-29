@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// 正在加载中的对话框
 // Navigator.of(context).pop() 取消加载对话框
 void showLoadingDialog(BuildContext context, String text) {
   showDialog(

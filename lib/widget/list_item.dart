@@ -2,10 +2,10 @@ import 'package:fim/widget/red_dot.dart';
 import 'package:flutter/cupertino.dart';
 
 class ListItem extends StatelessWidget {
-  Widget icon;
-  String name;
-  int num;
-  void Function() onTab;
+  final Widget icon;
+  final String name;
+  final int num;
+  final void Function() onTab;
 
   ListItem({Key key, this.icon, this.name, this.num = 0, this.onTab})
       : super(key: key);

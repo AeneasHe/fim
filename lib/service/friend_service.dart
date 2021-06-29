@@ -30,10 +30,12 @@ class FriendService with ChangeNotifier {
     }
   }
 
+  // 查询好友
   Friend get(Int64 friendId) {
     return friendMap[friendId];
   }
 
+  // 好友发生变化时，发出通知
   void changed() {
     notifyListeners();
   }

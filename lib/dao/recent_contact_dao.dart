@@ -71,7 +71,7 @@ class RecentContactDao {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static void updateRead(int objectType, int objectId) async {
+  static Future<void> updateRead(int objectType, int objectId) async {
     await database.rawUpdate(
         "UPDATE recent_contact SET unread = 0 where object_type = ? and object_id = ?",
         [objectType, objectId]);

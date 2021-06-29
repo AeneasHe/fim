@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 var recentContactService = RecentContactService();
 
+// 通讯录服务
 class RecentContactService with ChangeNotifier {
   List<RecentContact> contacts = <RecentContact>[];
   int unReadNum;

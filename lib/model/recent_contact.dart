@@ -6,7 +6,7 @@ import 'package:fim/pb/conn.ext.pb.dart';
 import 'package:intl/intl.dart';
 import 'package:fixnum/fixnum.dart';
 
-// 通讯录微服务
+// 通讯录数据结构
 class RecentContact {
   int objectType;
   int objectId;

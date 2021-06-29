@@ -18,7 +18,7 @@ import 'package:fim/pb/push.ext.pb.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart';
 
-// 长连接
+// Socket长连接
 class SocketManager {
   static const headerLen = 2;
   static Socket socket;
@@ -67,9 +67,12 @@ class SocketManager {
 
     var body = readBuffer.getRange(0, bodyLength).toList();
     readBuffer.removeRange(0, bodyLength);
-    var output = pb.Output.fromBuffer(body);
-    print(output);
 
+    // 解析数据
+    var output = pb.Output.fromBuffer(body);
+    print("收到消息:" + output.toString());
+
+    // 根据收到的数据执行不同操作
     switch (output.type) {
       // 登录成功时
       case pb.PackageType.PT_SIGN_IN:
@@ -123,9 +126,12 @@ class SocketManager {
           socket.flush();
         }
         break;
+      // 心跳
       case pb.PackageType.PT_HEARTBEAT:
         print("heartbeat output");
         break;
+
+      // 普通消息
       case pb.PackageType.PT_MESSAGE:
         print("message");
         var messageSend = pb.MessageSend.fromBuffer(output.data);
@@ -141,6 +147,7 @@ class SocketManager {
     print("捕获socket异常信息：error=$error，trace=${trace.toString()}");
   }
 
+  // 长连接关闭
   void doneHandler() {
     socket.destroy();
     print("socket关闭处理");

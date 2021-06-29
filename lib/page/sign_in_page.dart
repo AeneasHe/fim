@@ -14,9 +14,10 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// 登陆页面
 class SignInPage extends StatelessWidget {
-  TextEditingController _numberController = TextEditingController();
-  TextEditingController _codeController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

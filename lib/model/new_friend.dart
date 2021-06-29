@@ -1,3 +1,4 @@
+// 好友数据结构
 class NewFriend {
   static const int unread = 0;
   static const int read = 1;
@@ -20,6 +21,7 @@ class NewFriend {
       this.time,
       this.status});
 
+  // 从map创建NewFriend类型
   NewFriend.fromMap(Map<String, dynamic> map) {
     id = map["id"];
     userId = map["user_id"];
@@ -30,6 +32,7 @@ class NewFriend {
     status = map["status"];
   }
 
+  // NewFriend类型转成map
   Map<String, dynamic> toMap() {
     return {
       "id": id,

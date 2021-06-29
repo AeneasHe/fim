@@ -3,8 +3,9 @@ import 'package:fim/net/api.dart';
 import 'package:fim/pb/logic.ext.pb.dart';
 import 'package:fixnum/fixnum.dart';
 
+// 群组微服务
 class Groups {
-  static Map<Int64, Group> _groupMap =Map();
+  static Map<Int64, Group> _groupMap = Map();
 
   static Future<Group> get(Int64 groupId) async {
     var group = _groupMap[groupId];
